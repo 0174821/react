@@ -13,77 +13,77 @@ import cn.jxufe.db.connDB.*;
 
 public class PassengerDaoimpl implements PassengerDao{
 	ConnDB connfly=new ConnDB();
-	@Override
-	public List<flightclass> findFlightByStartAndDist(String start, String dist, Date godate) {
-		List<flightclass> flightclassesList=new ArrayList<flightclass>();
-		ResultSet rs = null;
-		PreparedStatement psmt = null;
-		//String sSql="select * from FLIGHT where FLYPLACE=? AND ARRIVEPLACE= ? AND FLYTIME=?";
-		String sSql="select * "
-				+ "from FLIGHT a,FLIGHTCLASS b,PLANE c,team d,TYPE e"
-				+ "where a.FLYPLACE=? AND a.ARRIVEPLACE=? AND FLYTIME=?"
-				+ "and a.FLIGHTNO=b.FLIGHTNO and b.PLANENO=c.PLANENO and b.TEAMNO=d.TEAMNO"
-				+ "and c.PLANETYPENO=e.PLANETYPENO";
-		try {
-			/**传入参数**/
-			psmt=connfly.getConn().prepareStatement(sSql);
-			psmt.setString(1, start);
-			psmt.setString(2, dist);
-			psmt.setDate(3, godate);
-			
-			rs  = psmt.executeQuery();
-			while(rs.next())
-			{
-				flightclass flightclassOne=new flightclass();
-				
-				/**首先设置外码部分**/
-				flight flightone=new flight();
-				//外码：总航班
-				flightone.setFlightno(rs.getString(1));
-				flightone.setFlightname(rs.getString(2));
-				flightone.setFlytime(rs.getDate(3));
-				flightone.setArrivetime(rs.getDate(4));
-				flightone.setFlyplace(rs.getString(5));
-				flightone.setArriveplace(rs.getString(6));
-				flightone.setDistance(rs.getString(7));
-				
-				plane planeone=new plane();
-				//外码：飞机
-				planeone.setPlaneno(rs.getString(15));
-					//飞机外码：机型
-				type typeone=new type();
-				typeone.setTypeno(rs.getString(20));
-				typeone.setTypename(rs.getString(21));
-				
-				planeone.setSeatnum(rs.getInt(16));
-				planeone.setPlanetype(typeone);				
-				
-				
-				team teamone=new team();
-				//外码：机组
-				teamone.setTeamno(rs.getString(18));
-				teamone.setTeamname(rs.getString(19));
-				
-				
-				
-				/**外码设置完毕，开始设置本属性**/
-				flightclassOne.setFlight(flightone);
-				flightclassOne.setFlightclassno(rs.getString(9));
-				flightclassOne.setTakeoff(rs.getDate(10));
-				flightclassOne.setArrival(rs.getDate(11));
-				flightclassOne.setPlane(planeone);
-				flightclassOne.setTeam(teamone);
-				flightclassOne.setDates(rs.getDate(12));
-				flightclassesList.add(flightclassOne);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			connfly.commitConn();
-			connfly.closeConn();
-		}
-		return flightclassesList;
-	}
+//	@Override
+//	public List<flightclass> findFlightByStartAndDist(String start, String dist, Date godate) {
+//		List<flightclass> flightclassesList=new ArrayList<flightclass>();
+//		ResultSet rs = null;
+//		PreparedStatement psmt = null;
+//		//String sSql="select * from FLIGHT where FLYPLACE=? AND ARRIVEPLACE= ? AND FLYTIME=?";
+//		String sSql="select * "
+//				+ "from FLIGHT a,FLIGHTCLASS b,PLANE c,team d,TYPE e"
+//				+ "where a.FLYPLACE=? AND a.ARRIVEPLACE=? AND FLYTIME=?"
+//				+ "and a.FLIGHTNO=b.FLIGHTNO and b.PLANENO=c.PLANENO and b.TEAMNO=d.TEAMNO"
+//				+ "and c.PLANETYPENO=e.PLANETYPENO";
+//		try {
+//			/**传入参数**/
+//			psmt=connfly.getConn().prepareStatement(sSql);
+//			psmt.setString(1, start);
+//			psmt.setString(2, dist);
+//			psmt.setDate(3, godate);
+//			
+//			rs  = psmt.executeQuery();
+//			while(rs.next())
+//			{
+//				flightclass flightclassOne=new flightclass();
+//				
+//				/**首先设置外码部分**/
+//				flight flightone=new flight();
+//				//外码：总航班
+//				flightone.setFlightno(rs.getString(1));
+//				flightone.setFlightname(rs.getString(2));
+//				flightone.setFlytime(rs.getDate(3));
+//				flightone.setArrivetime(rs.getDate(4));
+//				flightone.setFlyplace(rs.getString(5));
+//				flightone.setArriveplace(rs.getString(6));
+//				flightone.setDistance(rs.getString(7));
+//				
+//				plane planeone=new plane();
+//				//外码：飞机
+//				planeone.setPlaneno(rs.getString(15));
+//					//飞机外码：机型
+//				type typeone=new type();
+//				typeone.setTypeno(rs.getString(20));
+//				typeone.setTypename(rs.getString(21));
+//				
+//				planeone.setSeatnum(rs.getInt(16));
+//				planeone.setPlanetype(typeone);				
+//				
+//				
+//				team teamone=new team();
+//				//外码：机组
+//				teamone.setTeamno(rs.getString(18));
+//				teamone.setTeamname(rs.getString(19));
+//				
+//				
+//				
+//				/**外码设置完毕，开始设置本属性**/
+//				flightclassOne.setFlight(flightone);
+//				flightclassOne.setFlightclassno(rs.getString(9));
+//				flightclassOne.setTakeoff(rs.getDate(10));
+//				flightclassOne.setArrival(rs.getDate(11));
+//				flightclassOne.setPlane(planeone);
+//				flightclassOne.setTeam(teamone);
+//				flightclassOne.setDates(rs.getDate(12));
+//				flightclassesList.add(flightclassOne);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			connfly.commitConn();
+//			connfly.closeConn();
+//		}
+//		return flightclassesList;
+//	}
 
 	@Override
 	public List<tank> findtank(flightclass flightclass) {
